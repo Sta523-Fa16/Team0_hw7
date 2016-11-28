@@ -130,3 +130,22 @@ wday_hourly_summary = function(df)
     ) %>%
     collect()
 }
+
+taxi_wday_hourly = rbind(
+  cbind(taxi = "green",  wday_hourly_summary(taxi_green)),
+  cbind(taxi = "yellow", wday_hourly_summary(taxi_yellow))
+) 
+
+taxi_wday_hourly$wday=factor(taxi_wday_hourly$wday, 
+                             labels = c("Sun","Mon","Tue","Wed","Thu","Fri","Sat"), 
+                             ordered = TRUE)
+
+taxi_wday_hourly_tidy = gather(taxi_wday_hourly, key = avg_type, value = avg_value, avg_distance:avg_tip)
+
+
+ggplot(taxi_wday_hourly_tidy, aes(x=hour, y=avg_value, color=taxi)) +
+  geom_line() + 
+  scale_colour_manual(values=colors) + 
+  theme_bw() +
+  facet_grid(avg_type~wday, scales="free") + 
+  ylab("")
