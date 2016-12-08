@@ -9,17 +9,26 @@ library(gridExtra)
 library(tidyr)
 
 sparkR.session(
-  master="local[*]", 
+  master="local[4]",
   sparkConfig=list(
     spark.executor.memory="16g", 
     spark.driver.memory="8g"
   )
 )
 
+#sparkR.session(
+#  master="local[4]", 
+#  sparkConfig=list(
+#    spark.executor.memory="16g", 
+#    spark.driver.memory="8g"
+#  )
+#)
+
 
 ## JSON 
 
 reddit = read.df("/data/reddit/small.json", "json")
+
 
 ## Subreddit
 
